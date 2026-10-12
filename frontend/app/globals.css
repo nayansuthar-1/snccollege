@@ -45,9 +45,9 @@
   --color-google-yellow: #fbbc05;
   --color-google-green: #34a853;
 
-  /* Page container width (§4.2). 80rem left too much empty space on 1536px+ screens and
-     squeezed the header brand into the nav at 2xl. */
-  --container-8xl: 90rem;
+  /* Page container width (§4.2). Widened to 110rem (1760px) to reduce empty side margins
+     on large viewports and prevent brand / navigation crowding at 2xl. */
+  --container-8xl: 110rem;
 }
 
 @theme inline {

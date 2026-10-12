@@ -915,6 +915,20 @@ production, because every other phase is blocked. No production step was attempt
 
 ---
 
+## Layout refinement — Wide screen container width & header spacing (2026-10-12)
+**Status:** done
+**Requested by:** the owner (excessive side padding on wide monitors leaving logo too close to HOME nav item)
+**Root cause:** On viewports >= 1536px (`2xl`), `BrandMark` displays the affiliation subtitle and enlarges font to `text-lg`, and `DesktopNav` increases item padding to `2xl:px-3`. Because `--container-8xl` was capped at `90rem` (1440px), wide monitors (e.g. 1920px) had 232px of empty margin on each side, squeezing the usable space and reducing the distance between the college brand text and "HOME" to only 16px.
+**Fix:** Widened `--container-8xl` token in `frontend/app/globals.css` from `90rem` (1440px) to `110rem` (1760px). `<Container>` throughout the entire website now expands to 110rem on large displays while preserving comfortable gutters.
+**Measurements before vs after (headless Chrome CDP):**
+- **1920px:** Container width 1440px → **1760px**; side margin 232px → **72px**; gap between brand text and HOME **16px → 318px**.
+- **1536px:** Container width 1440px → **1521px**; gap between brand text and HOME **16px → 78.6px**.
+- **1440px & 1280px:** Unchanged (already full-width with 32px padding).
+- **Responsive verification:** Audited at 360, 768, 1024, 1280, 1440, 1536, 1920, 2560 px across 5 core routes (`/`, `/about/vision-mission`, `/admissions/merit-lists`, `/contact`, `/academics/programmes`): **0 horizontal overflow**.
+**Quality gates:** `npx tsc --noEmit` (0 errors), `npm run lint` (0 errors, 1 pre-existing warning).
+
+---
+
 ## Open questions
 1. ~~Owner: should the agent initialise git and make commits per phase?~~ **Answered 2026-10-12: yes.** The owner created `https://github.com/nayansuthar-1/snccollege.git` and asked for the work to be committed and pushed on their behalf. Done — see Decisions.
 2. ~~Owner: should the header's gold button be **Contact Us** (exactly as the college's menu has it) or stay **Apply Now**?~~ **Answered 2026-10-10: Keep Apply Now (gold) with Contact Us as the 8th item.** See Decisions.
