@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Newspaper } from 'lucide-react';
 import NewsCard from '@/components/cards/NewsCard';
+import NewsSearch from '@/components/news/NewsSearch';
 import PageHero from '@/components/page/PageHero';
 import Prose from '@/components/page/Prose';
 import EmptyState from '@/components/ui/EmptyState';
@@ -29,15 +30,52 @@ export default async function NewsPage({ searchParams }: { searchParams: SearchP
   const sp = await searchParams;
   const category = param(sp, 'category');
   const page = pageParam(sp);
+  const q = param(sp, 'q');
 
-  const [wpPage, data] = await Promise.all([getPage(WP_PATH), getNews({ category, page })]);
+  const [wpPage, data] = await Promise.all([getPage(WP_PATH), getNews({ category, page, q })]);
   const title = wpPage?.title ?? FALLBACK_TITLE;
   const active = data.categories.find((c) => c.slug === category);
 
+  const buildTabHref = (catSlug?: string) => {
+    const params = new URLSearchParams();
+    if (catSlug) params.set('category', catSlug);
+    if (q) params.set('q', q);
+    const qs = params.toString();
+    return qs ? `${PATH}?${qs}` : PATH;
+  };
+
   const tabs = [
-    { label: 'All', href: PATH, active: !active },
-    ...data.categories.map((c) => ({ label: c.name, href: `${PATH}?category=${c.slug}`, active: active?.slug === c.slug })),
+    { label: 'All', href: buildTabHref(), active: !active },
+    ...data.categories.map((c) => ({
+      label: c.name,
+      href: buildTabHref(c.slug),
+      active: active?.slug === c.slug,
+    })),
   ];
+
+  const buildPageBaseHref = () => {
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (q) params.set('q', q);
+    const qs = params.toString();
+    return qs ? `${PATH}?${qs}` : PATH;
+  };
+
+  const emptyTitle = q
+    ? `No news or events found matching "${q}"`
+    : active
+      ? `No ${active.name.toLowerCase()} published yet`
+      : 'No news published yet';
+
+  const emptyDescription = q
+    ? 'Try checking for typos or searching for a different keyword.'
+    : 'News, events and press notes appear here as soon as the college publishes them.';
+
+  const headingText = q
+    ? `Search results for "${q}"${active ? ` in ${active.name}` : ''}`
+    : active
+      ? active.name
+      : 'All news';
 
   return (
     <>
@@ -50,19 +88,28 @@ export default async function NewsPage({ searchParams }: { searchParams: SearchP
       <Section>
         {wpPage?.content_html && <Prose className="mb-10">{renderWpHtml(wpPage.content_html)}</Prose>}
 
-        {data.categories.length > 1 && <TabLinks items={tabs} label="Filter news by category" className="mb-10" />}
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          {data.categories.length > 1 ? (
+            <div className="min-w-0 flex-1">
+              <TabLinks items={tabs} label="Filter news by category" />
+            </div>
+          ) : (
+            <div />
+          )}
+          <div className="shrink-0">
+            <NewsSearch selectedQuery={q} className="w-full sm:w-72" />
+          </div>
+        </div>
 
         {data.items.length === 0 ? (
           <EmptyState
             icon={Newspaper}
-            title={active ? `No ${active.name.toLowerCase()} published yet` : 'No news published yet'}
-            description="News, events and press notes appear here as soon as the college publishes them."
+            title={emptyTitle}
+            description={emptyDescription}
           />
         ) : (
-          // The design shows no visible heading here, but the card titles are <h3>, so the
-          // list needs an <h2> for the heading order to stay intact.
           <>
-            <h2 className="sr-only">{active ? active.name : 'All news'}</h2>
+            <h2 className="sr-only">{headingText}</h2>
             <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {data.items.map((item) => (
                 <li key={item.id}>
@@ -73,8 +120,9 @@ export default async function NewsPage({ searchParams }: { searchParams: SearchP
           </>
         )}
 
-        <Pagination page={data.page} totalPages={data.total_pages} baseHref={category ? `${PATH}?category=${category}` : PATH} />
+        <Pagination page={data.page} totalPages={data.total_pages} baseHref={buildPageBaseHref()} />
       </Section>
     </>
   );
 }
+

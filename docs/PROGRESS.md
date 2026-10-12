@@ -931,9 +931,9 @@ production, because every other phase is blocked. No production step was attempt
 
 ---
 
-## Feature Enhancements — Print Stylesheet, Standing Committees Fallback, Admin Enquiry CSV Export, & Notice Keyword Search (2026-10-12)
+## Feature Enhancements — Print Stylesheet, Standing Committees Fallback, Admin Enquiry CSV Export, & Notice / News Keyword Search (2026-10-12)
 **Status:** done
-**Summary:** Implemented 4 high-utility UX and administrative features while waiting for college media and official documents:
+**Summary:** Implemented 5 high-utility UX and administrative features while waiting for college media and official documents:
 1. **Print Stylesheet (`@media print`):** Added clean print rules inside `@layer base` in `frontend/app/globals.css`. Automatically strips navigation chrome (`header`, `footer`, `nav`, skip link, mobile action bar, floating WhatsApp button, and interactive filter controls like `DocumentFilters` and `SessionSelect`). Any page (syllabus, notices, merit lists, committee orders, fee/rules pages) prints or exports to PDF cleanly without clutter.
 2. **Standing Committees Session Fallback (Open Question 11):** Updated `snc_rest_committees()` in `routes.php` with an `OR` tax clause allowing committees with no assigned session (`NOT EXISTS`) to remain visible when an academic session is filtered. Standing statutory bodies (Anti-Ragging Committee, Grievance Cell, Women Cell / ICC) never disappear, and display a "Standing" badge in the committee accordion.
 3. **Export Enquiries to CSV in wp-admin:** Added an "Export to CSV" action on the `snc_enquiry` admin list table (`admin-ux.php`) with streaming download handler. Produces a UTF-8 BOM encoded CSV (compatible with Excel on Windows and Hindi scripts) containing Enquiry ID, Date, Student Name, Mobile Number, Email, Selected Programme, and Student Message.
@@ -942,6 +942,12 @@ production, because every other phase is blocked. No production step was attempt
    - Frontend `getNotices()` passes `q`.
    - `NoticeSearch.tsx` client component with 350ms debounce, input clear button, and URL synchronization.
    - Preserves active tab category and pagination state when typing or switching filters.
+5. **News & Events Keyword Search:** Added real-time keyword search to `/news`:
+   - Backend `snc/v1/news` accepts sanitized query param `q` and maps to WP_Query `'s'` parameter.
+   - Frontend `getNews()` passes `q`.
+   - `NewsSearch.tsx` client component with 350ms debounce, input clear button, and URL synchronization.
+   - Preserves active category filter and pagination state when typing or switching categories.
+   - Dynamic empty states contextualized for active searches (`No news or events found matching "..."`).
 **Quality gates:** `npx tsc --noEmit` (0 errors), `npm run lint` (0 errors, 1 pre-existing warning).
 
 ---
@@ -968,6 +974,7 @@ production, because every other phase is blocked. No production step was attempt
 11. ~~Owner: should committees with no session always be listed?~~ **Resolved 2026-10-12:** Untagged standing committees (Anti-Ragging, Grievance Cell, ICC Women Cell, etc.) remain permanently visible alongside session-specific committees via an `OR` tax query fallback. They are labelled with a "Standing" metadata badge when not tied to a specific session.
 
 ## Decisions
+- 2026-10-12: **Real-time keyword search enabled for News & Events** (`/news`) with 350ms debounce and query persistence across category tabs and pagination.
 - 2026-10-12: **Standing committees remain permanently visible** across all session filters, and are labelled "Standing" in the committee accordion if no specific session is assigned.
 - 2026-10-12: **Print media stylesheet enabled** across all routes (`@media print` in `globals.css`) stripping site chrome and filters for clean document printing and PDF archiving.
 - 2026-10-12: **Enquiry CSV export enabled** in wp-admin (`admin_post_snc_export_enquiries`) with UTF-8 BOM encoding for Excel compatibility.

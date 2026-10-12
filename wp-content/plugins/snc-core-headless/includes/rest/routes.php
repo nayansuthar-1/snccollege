@@ -275,7 +275,14 @@ function snc_rest_album(WP_REST_Request $req) {
 
 function snc_rest_news(WP_REST_Request $req) {
     $cat = sanitize_title((string) $req->get_param('category'));
-    $args = ['post_type' => 'post'] + ($cat !== '' ? ['category_name' => $cat] : []);
+    $q   = sanitize_text_field((string) $req->get_param('q'));
+    $args = ['post_type' => 'post'];
+    if ($cat !== '') {
+        $args['category_name'] = $cat;
+    }
+    if ($q !== '') {
+        $args['s'] = $q;
+    }
     // "Uncategorized" is WordPress's own fallback term and is never offered as a filter.
     $categories = array_values(array_filter(snc_terms_in_use('category'), fn($t) => $t['slug'] !== 'uncategorized'));
     return snc_paged($args, 'snc_serialize_news_summary', $req, 12) + ['categories' => $categories];

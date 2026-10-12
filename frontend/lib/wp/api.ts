@@ -129,7 +129,7 @@ export const getAlbum = cache(
   (slug: string): Promise<Album | null> => safeItem(`album ${slug}`, () => wpFetch<Album>(`/gallery/${encodeURIComponent(slug)}`, { tags: ['gallery'] })),
 );
 
-export function getNews(params: { category?: string; page?: number } = {}): Promise<NewsResponse> {
+export function getNews(params: { category?: string; page?: number; q?: string } = {}): Promise<NewsResponse> {
   return safe('news', () => wpFetch<NewsResponse>('/news', { params, tags: ['news'] }), { ...emptyPaged<NewsSummary>(), categories: [] });
 }
 
