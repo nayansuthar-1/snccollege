@@ -27,6 +27,8 @@ part out. A guessed value is published to the public as if the college had said 
 
 You now see the Dashboard. The black menu down the left side is where everything happens.
 
+![WordPress Dashboard](screenshots/staff-guide/01-dashboard.png)
+
 **You do not have to publish the website.** When you click Publish or Update, the public
 website updates itself within a few seconds. There is no second step.
 
@@ -68,6 +70,8 @@ website updates itself within a few seconds. There is no second step.
    Academic, Events or General. This decides which tab the notice appears under.
 6. Click **Publish**.
 
+![Add New Notice](screenshots/staff-guide/02-add-notice.png)
+
 It appears immediately on the home page notice board and on `/students/notices`.
 
 ---
@@ -86,6 +90,8 @@ It appears immediately on the home page notice board and on `/students/notices`.
      List or Other
    - **Categories** — All Categories, General, OBC, SC, ST, EWS, MBC or Divyang
 5. Click **Publish**.
+
+![Add New Merit List](screenshots/staff-guide/03-add-merit-list.png)
 
 If a session you need is missing from **Sessions**, type it into the "Add new" box in that
 panel using the same `2027-28` pattern.
@@ -116,6 +122,8 @@ panel using the same `2027-28` pattern.
    filters work.
 6. Click **Publish**.
 
+![Add New Document](screenshots/staff-guide/04-add-document.png)
+
 ---
 
 ## 6. Adding a news item or event report
@@ -129,6 +137,8 @@ panel using the same `2027-28` pattern.
    internet.
 6. Click **Publish**.
 
+![Add News Item](screenshots/staff-guide/05-add-news.png)
+
 ---
 
 ## 7. Creating a photo album
@@ -141,6 +151,8 @@ panel using the same `2027-28` pattern.
 5. Give each photo a caption in the media window as you upload it; captions appear under the
    photo on the website.
 6. Click **Publish**.
+
+![Add New Photo Album](screenshots/staff-guide/06-add-album.png)
 
 ---
 
@@ -159,6 +171,8 @@ panel using the same `2027-28` pattern.
 9. **Order** (right-hand column, under "Page Attributes") — a lower number appears first.
 10. Click **Publish**.
 
+![Add New Staff Member](screenshots/staff-guide/07-add-staff.png)
+
 ---
 
 ## 9. Adding a homepage banner slide
@@ -172,6 +186,8 @@ panel using the same `2027-28` pattern.
    **Small label above heading**, **Heading** and **Supporting text**, and up to two buttons.
 6. **Order** — a lower number shows first. A maximum of five slides are shown.
 7. Click **Publish**.
+
+![Add New Homepage Slide](screenshots/staff-guide/08-add-slide.png)
 
 With no slides published at all, the home page shows the college name and emblem instead.
 That is normal and correct.
@@ -188,6 +204,8 @@ That is normal and correct.
 6. **Office order PDF** — upload the signed order if you have it.
 7. Right-hand column — tick the **Session**.
 8. Click **Publish**.
+
+![Add New Committee](screenshots/staff-guide/09-add-committee.png)
 
 > **Important — tick the Session on every committee or on none.** The committees page shows
 > one session at a time. While no committee has a session ticked, the page lists them all.
@@ -211,6 +229,8 @@ you need and click **Save settings** at the bottom — one button saves the whol
 | **Homepage** | About section text and photo, "Why choose SNC" cards, Key facts, Admission banner |
 | **Reviews** | Google rating, Number of Google reviews, Link to the Google listing |
 | **Search & sharing** | Default share image (1200 × 630), used when a page has no photo of its own |
+
+![SNC Settings](screenshots/staff-guide/10-snc-settings.png)
 
 Two to know:
 
@@ -245,6 +265,8 @@ settings**.
 7. **Cleared to publish** — tick it. **Nothing appears on the website until this is ticked.**
 8. Click **Publish**.
 
+![Add New Testimonial](screenshots/staff-guide/11-add-review.png)
+
 Never write a review yourself, and never adjust a score. Copy what Google shows, or publish
 nothing.
 
@@ -255,6 +277,8 @@ nothing.
 Click **Enquiries**. Every enquiry sent through the website's contact and admission forms is
 listed here with the student's name, phone number, email, the programme they asked about, the
 message and the date. Open one to read it in full and then phone or WhatsApp the student.
+
+![Student Enquiries in wp-admin](screenshots/staff-guide/12-enquiries.png)
 
 These are private; they are never shown on the website. You cannot create an enquiry by hand,
 only read what students have sent.

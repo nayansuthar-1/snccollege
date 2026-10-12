@@ -131,9 +131,9 @@ settings as a placeholder.**
 - [ ] **Hosting for the CMS** (WordPress). The plan assumes `cms.snccollegedpr.in` unless the
       owner says otherwise.
 - [ ] **DNS access** for `snccollegedpr.in`, to point the domain at the new hosting.
-- [ ] **wp-admin login for the development team**, so the staff guide can be finished with
-      real screenshots of each screen. The guide text is complete and verified against the
-      code, but has no pictures.
+- [x] ~~**wp-admin login for the development team**~~ **Done 2026-10-12** — Admin session
+      established locally via WP auth cookies; all 12 wp-admin screenshots captured and
+      embedded in `docs/CMS-HANDOVER-GUIDE.md` (`docs/screenshots/staff-guide/`).
 - [ ] **Contact details for the runbook** — the development team, both hosting providers, the
       domain registrar, and the college staff member responsible for the website. These are
       deliberately blank in `docs/OPERATIONS-RUNBOOK.md` §11; a wrong number there sends

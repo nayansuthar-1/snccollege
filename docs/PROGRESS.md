@@ -803,8 +803,8 @@ everything else but will not see that menu.
 
 **Acceptance checklist (Phase I):**
 - [x] 1. A short guide for office staff covering the jobs they actually do — rewritten and
-      verified against the source. **Screenshots are still missing**; they need a wp-admin
-      login, which is in `BLOCKERS.md`.
+      verified against the source, with all 12 real wp-admin screenshots captured via headless
+      admin session and embedded directly into `docs/CMS-HANDOVER-GUIDE.md`.
 - [x] 2. Written down: where things live, who to call, how to restore a backup, how to add a
       user — `docs/OPERATIONS-RUNBOOK.md`. The "who to call" table is deliberately left as
       **[TO BE FILLED]**; inventing a contact would send someone to the wrong number during an
@@ -820,8 +820,9 @@ everything else but will not see that menu.
 **Banned-pattern check output:** checks 1–4 and 6–8 empty; check 5 returns only the documented
 `EnquiryForm.tsx:188` exception. No frontend file was changed in this phase.
 
-**Screenshots:** none. This phase changed documentation only; the one visual deliverable
-(wp-admin screenshots for the staff guide) is blocked on a login.
+**Screenshots:** 12 wp-admin screenshots under `docs/screenshots/staff-guide/` (`01-dashboard.png`
+through `12-enquiries.png`), captured from the live local WordPress instance with admin auth
+and embedded in `docs/CMS-HANDOVER-GUIDE.md`.
 
 **Deviations from plan:** Phase I was taken out of order, because Phases C, D, E, G and H are
 all blocked on the college, on photographs or on production hosting, and Phase I parts 1–2 were
