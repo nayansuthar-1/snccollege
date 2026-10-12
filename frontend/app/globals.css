@@ -1,0 +1,410 @@
+@import "tailwindcss";
+
+/*
+ * SNC design tokens — see docs/01-DESIGN-SYSTEM.md §3.
+ * Only @theme and @layer blocks are allowed in this file (§3.6).
+ */
+
+@theme {
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-primary-950: #061633;
+  --color-primary-900: #0a2152;
+  --color-primary-800: #0f2d6b;
+  --color-primary-700: #1a3e87;
+  --color-primary-100: #e3eaf6;
+  --color-primary-50: #f2f5fb;
+
+  --color-gold-600: #a8841f;
+  --color-gold-500: #c9a227;
+  --color-gold-400: #ddb948;
+  --color-gold-100: #f6edcf;
+  --color-gold-50: #fbf7ea;
+
+  --color-ink-900: #111827;
+  --color-ink-700: #374151;
+  --color-ink-500: #6b7280;
+  --color-ink-300: #d1d5db;
+  --color-ink-200: #e5e7eb;
+  --color-ink-100: #f3f4f6;
+  --color-ink-50: #f9fafb;
+
+  --color-danger-700: #b91c1c;
+  --color-success-700: #15803d;
+  --color-whatsapp: #25d366;
+
+  /* Google's four brand colours, for the Google mark on the reviews section only (§3.7).
+     Google's brand terms do not allow a recoloured or monochrome "G". */
+  --color-google-blue: #4285f4;
+  --color-google-red: #ea4335;
+  --color-google-yellow: #fbbc05;
+  --color-google-green: #34a853;
+
+  /* Page container width (§4.2). 80rem left too much empty space on 1536px+ screens and
+     squeezed the header brand into the nav at 2xl. */
+  --container-8xl: 90rem;
+}
+
+@theme inline {
+  --font-serif: var(--font-merriweather), Georgia, "Times New Roman", serif;
+  /* Devanagari glyphs fall through to system fonts (Nirmala UI / Noto / Kohinoor). */
+  --font-sans: var(--font-jakarta), "Nirmala UI", "Noto Sans Devanagari", "Kohinoor Devanagari", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-ink-700);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-ink-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-100);
+    color: var(--color-primary-950);
+  }
+
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+@layer components {
+  /* Typography for HTML coming from WordPress — §5.17 */
+  .prose-snc {
+    font-size: 1rem;
+    line-height: 1.75rem;
+    color: var(--color-ink-700);
+  }
+
+  /*
+   * Running text keeps a readable measure (~75 characters per line, design system §9 item 15),
+   * while tables, figures and galleries may use the full column width.
+   */
+  .prose-snc > p,
+  .prose-snc > ul,
+  .prose-snc > ol,
+  .prose-snc > h2,
+  .prose-snc > h3,
+  .prose-snc > h4,
+  .prose-snc > h5,
+  .prose-snc > h6,
+  .prose-snc > blockquote {
+    max-width: 65ch;
+  }
+
+  .prose-snc > :first-child {
+    margin-top: 0;
+  }
+
+  .prose-snc > :last-child {
+    margin-bottom: 0;
+  }
+
+  .prose-snc h2 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    color: var(--color-ink-900);
+  }
+
+  .prose-snc h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    color: var(--color-ink-900);
+  }
+
+  .prose-snc h4 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    color: var(--color-ink-900);
+  }
+
+  .prose-snc p {
+    margin-bottom: 1.25rem;
+  }
+
+  .prose-snc ul,
+  .prose-snc ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose-snc ul {
+    list-style-type: disc;
+  }
+
+  .prose-snc ol {
+    list-style-type: decimal;
+  }
+
+  .prose-snc li + li {
+    margin-top: 0.5rem;
+  }
+
+  .prose-snc li::marker {
+    color: var(--color-gold-600);
+  }
+
+  .prose-snc a {
+    color: var(--color-primary-800);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .prose-snc a:hover {
+    color: var(--color-primary-700);
+  }
+
+  .prose-snc strong {
+    font-weight: 600;
+    color: var(--color-ink-900);
+  }
+
+  .prose-snc img {
+    margin-block: 2rem;
+    border-radius: 0.75rem;
+    height: auto;
+  }
+
+  .prose-snc figure {
+    margin-block: 2rem;
+  }
+
+  .prose-snc figure img {
+    margin-block: 0;
+  }
+
+  .prose-snc figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: var(--color-ink-500);
+  }
+
+  .prose-snc blockquote {
+    margin-block: 2rem;
+    border-left: 4px solid var(--color-gold-500);
+    padding-left: 1.25rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-ink-900);
+  }
+
+  .prose-snc hr {
+    margin-block: 3rem;
+    border-color: var(--color-ink-200);
+  }
+
+  .prose-snc .table-scroll,
+  .prose-snc .wp-block-table {
+    margin-block: 2rem;
+    overflow-x: auto;
+    border: 1px solid var(--color-ink-200);
+    border-radius: 0.75rem;
+  }
+
+  .prose-snc table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+  }
+
+  .prose-snc thead th,
+  .prose-snc th {
+    background-color: var(--color-ink-100);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-500);
+  }
+
+  .prose-snc th,
+  .prose-snc td {
+    padding: 0.875rem 1.25rem;
+    vertical-align: top;
+  }
+
+  .prose-snc tr + tr td,
+  .prose-snc tbody tr td {
+    border-top: 1px solid var(--color-ink-200);
+  }
+
+  .prose-snc .wp-block-columns {
+    display: grid;
+    gap: 2rem;
+    margin-block: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .prose-snc .wp-block-columns {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    }
+
+    .prose-snc h2 {
+      font-size: 1.875rem;
+      line-height: 2.375rem;
+    }
+  }
+
+  .prose-snc .wp-block-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-block: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .prose-snc .wp-block-gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .prose-snc .wp-block-gallery img {
+    margin: 0;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .prose-snc .wp-block-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block: 1rem;
+    border: 1px solid var(--color-ink-200);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .prose-snc .wp-block-file a:not(.wp-block-file__button) {
+    font-weight: 500;
+    color: var(--color-ink-900);
+    text-decoration: none;
+  }
+
+  .prose-snc .wp-block-file__button,
+  .prose-snc .wp-block-button__link {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 0.375rem;
+    background-color: var(--color-primary-800);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-white);
+    text-decoration: none;
+  }
+
+  .prose-snc .wp-block-file__button:hover,
+  .prose-snc .wp-block-button__link:hover {
+    background-color: var(--color-primary-700);
+    color: var(--color-white);
+  }
+
+  /*
+   * Numbered step cards. Applied from WordPress by giving an ordered list the
+   * "Additional CSS class" snc-steps (Block settings → Advanced). Best with 3–4 items.
+   */
+  .prose-snc .snc-steps {
+    max-width: none;
+    list-style: none;
+    padding-left: 0;
+    margin-block: 2rem;
+    display: grid;
+    gap: 1rem;
+    counter-reset: snc-step;
+  }
+
+  @media (min-width: 640px) {
+    .prose-snc .snc-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .prose-snc .snc-steps {
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+  }
+
+  .prose-snc .snc-steps > li {
+    counter-increment: snc-step;
+    margin: 0;
+    border: 1px solid var(--color-ink-200);
+    border-radius: 0.75rem;
+    background-color: var(--color-white);
+    padding: 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+  }
+
+  .prose-snc .snc-steps > li::marker {
+    content: '';
+  }
+
+  .prose-snc .snc-steps > li::before {
+    content: counter(snc-step);
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.375rem;
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-800);
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .prose-snc .wp-block-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block: 1.5rem;
+  }
+}
