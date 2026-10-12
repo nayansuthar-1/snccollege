@@ -1,0 +1,73 @@
+# ---------------------------------------------------------------------------
+# Secrets — never commit these. wp-config.php holds the database password and
+# SNC_REVALIDATE_SECRET; .env.local holds the matching REVALIDATE_SECRET.
+# ---------------------------------------------------------------------------
+wp-config.php
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ---------------------------------------------------------------------------
+# WordPress core. This repository holds the project's own source, not a full
+# WordPress install — core is vendor code and is never modified here (see
+# .agents/rules/40-wordpress-plugin.md). Reinstall it from wordpress.org at the
+# version recorded in README.md.
+# ---------------------------------------------------------------------------
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/index.php
+/xmlrpc.php
+/license.txt
+/readme.html
+
+# ---------------------------------------------------------------------------
+# WordPress content we do not own or cannot usefully version
+# ---------------------------------------------------------------------------
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/upgrade-temp-backup/
+/wp-content/themes/
+/wp-content/languages/
+/wp-content/debug.log
+/wp-content/index.php
+/wp-content/plugins/*
+!/wp-content/plugins/snc-core-headless/
+
+# ---------------------------------------------------------------------------
+# Build output and dependencies
+# ---------------------------------------------------------------------------
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# ---------------------------------------------------------------------------
+# Backups and dumps — these belong outside the repository
+# ---------------------------------------------------------------------------
+*.sql
+*.tar.gz
+*.zip
+
+# ---------------------------------------------------------------------------
+# Editor and OS
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ---------------------------------------------------------------------------
+# Stray headless-Chrome user-data directories. The visual-verification script
+# writes a browser profile (cookies, caches, ~19k files) wherever it is pointed;
+# one was left under docs/screenshots/phase-10/ on 2026-10-10.
+# ---------------------------------------------------------------------------
+.profile-*/
+snc-chrome/
+
+# All-in-One WP Migration backup archives — can contain a full database dump.
+/wp-content/ai1wm-backups/
