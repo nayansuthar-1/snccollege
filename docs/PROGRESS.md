@@ -915,7 +915,7 @@ production, because every other phase is blocked. No production step was attempt
 ---
 
 ## Open questions
-1. Owner: should the agent initialise git and make commits per phase? (The plan assumes yes.)
+1. ~~Owner: should the agent initialise git and make commits per phase?~~ **Answered 2026-10-12: yes.** The owner created `https://github.com/nayansuthar-1/snccollege.git` and asked for the work to be committed and pushed on their behalf. Done — see Decisions.
 2. ~~Owner: should the header's gold button be **Contact Us** (exactly as the college's menu has it) or stay **Apply Now**?~~ **Answered 2026-10-10: Keep Apply Now (gold) with Contact Us as the 8th item.** See Decisions.
 3. ~~Owner: `/academics` is now linked from nowhere — the college's menu has no "Academics" item and "Courses" points at `/academics/programmes`. Leave it unlinked, delete the page, or point Courses at it?~~ **Answered 2026-10-10: Leave unlinked; Courses continues to point to `/academics/programmes`.** See Decisions.
 4. ~~Owner: `/news` breadcrumbs as Home › Gallery › News & Events, because News sits in the Gallery menu. Acceptable, or should News move?~~ **Answered 2026-10-10: Acceptable; keep under Gallery menu.** See Decisions.
@@ -941,6 +941,7 @@ production, because every other phase is blocked. No production step was attempt
    No code was changed pending this answer.
 
 ## Decisions
+- 2026-10-12: **The project is under version control** at `https://github.com/nayansuthar-1/snccollege.git`, pushed to `main` on the owner's instruction. The repository holds the project's own source — `frontend/`, `wp-content/plugins/snc-core-headless/`, `docs/`, `.agents/` and the root markdown — and **not** WordPress core, `wp-config.php`, `frontend/.env.local` or `wp-content/uploads/`. It is therefore **not a backup**: restoring the site needs this code plus a database dump plus the uploads folder, as `README.md` and `docs/OPERATIONS-RUNBOOK.md` §4 both say. Core can be added later if the owner wants a full-install repository; removing a committed secret could not be undone as easily, which is why the split was made this way.
 - 2026-10-09: Content items will be supplied later by the owner; see `docs/03-CONTENT-REQUIREMENTS.md`.
 - 2026-10-10: Primary navigation follows the college's own menu, not design system §7.2. Routes are unchanged; see "Phase 10 follow-up" for the full list of deviations.
 - 2026-10-10: The official emblem (`SNC_Logo.png` from the old site) is bundled as the default logo and overridable from SNC Settings → College identity → College logo.

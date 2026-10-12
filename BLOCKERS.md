@@ -123,9 +123,10 @@ settings as a placeholder.**
 
 ## Owner decisions
 
-- [ ] **Should the development team initialise git and commit each phase?** There is currently
-      no version control on this project — only a tar.gz snapshot. This is the single largest
-      technical risk to the work already done.
+- [x] ~~**Should the development team initialise git and commit each phase?**~~ **Done
+      2026-10-12** — pushed to `https://github.com/nayansuthar-1/snccollege.git`. Note that the
+      repository is **not a backup**: it excludes WordPress core, `wp-config.php` and
+      `wp-content/uploads/`, so a restore also needs a database dump and the uploads folder.
 - [ ] **Hosting for the website** (Next.js) — provider and account.
 - [ ] **Hosting for the CMS** (WordPress). The plan assumes `cms.snccollegedpr.in` unless the
       owner says otherwise.
