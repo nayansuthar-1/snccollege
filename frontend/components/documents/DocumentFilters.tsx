@@ -57,7 +57,7 @@ export default function DocumentFilters({ years, programmes, listTypes, categori
   const hasFilters = Boolean(selected.programme || selected.list_type || selected.category || selected.q);
 
   return (
-    <div className={cn('mb-6 transition-opacity duration-200', isPending && 'opacity-60')} aria-busy={isPending}>
+    <div className={cn('mb-6 transition-opacity duration-200 print:hidden', isPending && 'opacity-60')} aria-busy={isPending}>
       <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between">
         {programmes.length > 1 && (
           <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by programme">

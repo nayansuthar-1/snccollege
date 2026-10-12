@@ -74,10 +74,10 @@ export const getPage = cache(
     safeItem(`page ${path}`, () => wpFetch<WpPage>('/page', { params: { path }, tags: ['pages', `page:${path}`] })),
 );
 
-export function getNotices(params: { type?: string; page?: number; perPage?: number } = {}): Promise<NoticesResponse> {
+export function getNotices(params: { type?: string; page?: number; perPage?: number; q?: string } = {}): Promise<NoticesResponse> {
   return safe(
     'notices',
-    () => wpFetch<NoticesResponse>('/notices', { params: { type: params.type, page: params.page, per_page: params.perPage }, tags: ['notices'] }),
+    () => wpFetch<NoticesResponse>('/notices', { params: { type: params.type, page: params.page, per_page: params.perPage, q: params.q }, tags: ['notices'] }),
     { ...emptyPaged<Notice>(), types: [] },
   );
 }

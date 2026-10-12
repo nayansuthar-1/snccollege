@@ -68,6 +68,8 @@ Thumbs.db
 # ---------------------------------------------------------------------------
 .profile-*/
 snc-chrome/
+scratch/
 
 # All-in-One WP Migration backup archives — can contain a full database dump.
 /wp-content/ai1wm-backups/
+

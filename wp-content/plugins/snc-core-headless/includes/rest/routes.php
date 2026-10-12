@@ -167,6 +167,10 @@ function snc_rest_page(WP_REST_Request $req) {
 
 function snc_rest_notices(WP_REST_Request $req) {
     $args = ['post_type' => 'circulars'] + snc_tax_query([snc_tax_clause('circular_type', $req->get_param('type'))]);
+    $q = sanitize_text_field((string) $req->get_param('q'));
+    if ($q !== '') {
+        $args['s'] = $q;
+    }
     return snc_paged($args, 'snc_serialize_notice', $req) + ['types' => snc_terms_in_use('circular_type')];
 }
 
@@ -225,10 +229,30 @@ function snc_rest_faculty(WP_REST_Request $req) {
 
 function snc_rest_committees(WP_REST_Request $req) {
     $year = snc_resolve_year($req, 'committees');
+    $tax_query = [];
+    if ($year !== '') {
+        // Return committees tagged for this academic year OR untagged standing committees
+        $tax_query = [
+            'tax_query' => [
+                'relation' => 'OR',
+                [
+                    'taxonomy' => 'academic_year',
+                    'field'    => 'slug',
+                    'terms'    => $year,
+                ],
+                [
+                    'taxonomy' => 'academic_year',
+                    'operator' => 'NOT EXISTS',
+                ],
+            ],
+        ];
+    }
     $args = [
-        'post_type' => 'committees', 'posts_per_page' => 100,
-        'orderby'   => ['menu_order' => 'ASC', 'title' => 'ASC'],
-    ] + snc_tax_query([snc_tax_clause('academic_year', $year)]);
+        'post_type'      => 'committees',
+        'posts_per_page' => 100,
+        'orderby'        => ['menu_order' => 'ASC', 'title' => 'ASC'],
+    ] + $tax_query;
+
     return [
         'items'         => snc_query($args, 'snc_serialize_committee'),
         'selected_year' => $year,

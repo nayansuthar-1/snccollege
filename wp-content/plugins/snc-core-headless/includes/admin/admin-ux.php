@@ -123,3 +123,60 @@ add_action('add_meta_boxes_enquiry', function () {
         echo '</tbody></table>';
     }, 'enquiry', 'normal', 'high');
 });
+
+/** Add "Export to CSV" button on the Enquiry list screen. */
+add_action('manage_posts_extra_tablenav', function (string $which) {
+    global $typenow;
+    if ($typenow === 'enquiry' && $which === 'top') {
+        $url = wp_nonce_url(admin_url('admin-post.php?action=snc_export_enquiries'), 'snc_export_enquiries_nonce');
+        printf(
+            '<div class="alignleft actions"><a href="%s" class="button button-secondary" style="margin-top: 1px;">%s</a></div>',
+            esc_url($url),
+            'Export to CSV'
+        );
+    }
+});
+
+/** Stream enquiries as a CSV download. */
+add_action('admin_post_snc_export_enquiries', function () {
+    check_admin_referer('snc_export_enquiries_nonce');
+    if (!current_user_can('edit_posts')) {
+        wp_die('Unauthorized');
+    }
+
+    $q = new WP_Query([
+        'post_type'      => 'enquiry',
+        'post_status'    => ['private', 'publish'],
+        'posts_per_page' => 1000,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ]);
+
+    $filename = 'snc-enquiries-' . gmdate('Y-m-d') . '.csv';
+
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
+    $out = fopen('php://output', 'w');
+    // Output UTF-8 BOM for Microsoft Excel compatibility
+    fwrite($out, "\xEF\xBB\xBF");
+
+    fputcsv($out, ['ID', 'Date', 'Student Name', 'Mobile', 'Email', 'Programme', 'Message']);
+
+    foreach ($q->posts as $post) {
+        fputcsv($out, [
+            $post->ID,
+            get_the_date('Y-m-d H:i:s', $post),
+            $post->post_title,
+            (string) get_post_meta($post->ID, 'snc_phone', true),
+            (string) get_post_meta($post->ID, 'snc_email', true),
+            (string) get_post_meta($post->ID, 'snc_programme', true),
+            (string) get_post_meta($post->ID, 'snc_message', true),
+        ]);
+    }
+
+    fclose($out);
+    exit;
+});

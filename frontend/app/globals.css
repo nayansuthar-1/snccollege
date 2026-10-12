@@ -97,6 +97,71 @@
   [id] {
     scroll-margin-top: 6rem;
   }
+
+  @media print {
+    body {
+      background-color: var(--color-white) !important;
+      color: var(--color-black) !important;
+      font-size: 11pt;
+      line-height: 1.4;
+      padding-bottom: 0 !important;
+    }
+
+    /* Hide chrome, navigation and interactive floating elements */
+    header,
+    footer,
+    nav,
+    aside,
+    [role="complementary"],
+    [aria-label="Skip to main content"],
+    [aria-label="Contact options on mobile"],
+    [aria-label="Chat on WhatsApp"],
+    .snc-no-print {
+      display: none !important;
+    }
+
+    main {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    /* Clean links: show text in black without background */
+    a {
+      color: var(--color-black) !important;
+      text-decoration: underline;
+    }
+
+    /* Page break optimization */
+    tr,
+    details,
+    article,
+    li {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    h1,
+    h2,
+    h3 {
+      break-after: avoid;
+      page-break-after: avoid;
+      color: var(--color-black) !important;
+    }
+
+    table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--color-ink-300) !important;
+      padding: 6pt 8pt !important;
+    }
+  }
 }
 
 @layer components {

@@ -929,6 +929,23 @@ production, because every other phase is blocked. No production step was attempt
 
 ---
 
+---
+
+## Feature Enhancements — Print Stylesheet, Standing Committees Fallback, Admin Enquiry CSV Export, & Notice Keyword Search (2026-10-12)
+**Status:** done
+**Summary:** Implemented 4 high-utility UX and administrative features while waiting for college media and official documents:
+1. **Print Stylesheet (`@media print`):** Added clean print rules inside `@layer base` in `frontend/app/globals.css`. Automatically strips navigation chrome (`header`, `footer`, `nav`, skip link, mobile action bar, floating WhatsApp button, and interactive filter controls like `DocumentFilters` and `SessionSelect`). Any page (syllabus, notices, merit lists, committee orders, fee/rules pages) prints or exports to PDF cleanly without clutter.
+2. **Standing Committees Session Fallback (Open Question 11):** Updated `snc_rest_committees()` in `routes.php` with an `OR` tax clause allowing committees with no assigned session (`NOT EXISTS`) to remain visible when an academic session is filtered. Standing statutory bodies (Anti-Ragging Committee, Grievance Cell, Women Cell / ICC) never disappear, and display a "Standing" badge in the committee accordion.
+3. **Export Enquiries to CSV in wp-admin:** Added an "Export to CSV" action on the `snc_enquiry` admin list table (`admin-ux.php`) with streaming download handler. Produces a UTF-8 BOM encoded CSV (compatible with Excel on Windows and Hindi scripts) containing Enquiry ID, Date, Student Name, Mobile Number, Email, Selected Programme, and Student Message.
+4. **Notice Keyword Search:** Added real-time subject search to `/students/notices`:
+   - Backend `snc/v1/notices` accepts sanitized query param `q`.
+   - Frontend `getNotices()` passes `q`.
+   - `NoticeSearch.tsx` client component with 350ms debounce, input clear button, and URL synchronization.
+   - Preserves active tab category and pagination state when typing or switching filters.
+**Quality gates:** `npx tsc --noEmit` (0 errors), `npm run lint` (0 errors, 1 pre-existing warning).
+
+---
+
 ## Open questions
 1. ~~Owner: should the agent initialise git and make commits per phase?~~ **Answered 2026-10-12: yes.** The owner created `https://github.com/nayansuthar-1/snccollege.git` and asked for the work to be committed and pushed on their behalf. Done — see Decisions.
 2. ~~Owner: should the header's gold button be **Contact Us** (exactly as the college's menu has it) or stay **Apply Now**?~~ **Answered 2026-10-10: Keep Apply Now (gold) with Contact Us as the 8th item.** See Decisions.
@@ -948,14 +965,13 @@ production, because every other phase is blocked. No production step was attempt
    Note that `.agents/rules/10-never-invent-content.md` still states the college is *not* accredited,
    which now contradicts §8.3 — the rule should be corrected once the details arrive, by the owner's
    instruction rather than by an agent.
-11. **Owner: should committees with no session always be listed?** The committees page shows one
-   session at a time. `snc_resolve_year()` falls back to no filter while nothing carries an
-   `academic_year` term, so all 11 real committees show today — but tagging a single committee
-   with a session hides the other ten. Either all committees get tagged together (the office has
-   been warned in the staff guide), or the resolver should keep untagged committees visible.
-   No code was changed pending this answer.
+11. ~~Owner: should committees with no session always be listed?~~ **Resolved 2026-10-12:** Untagged standing committees (Anti-Ragging, Grievance Cell, ICC Women Cell, etc.) remain permanently visible alongside session-specific committees via an `OR` tax query fallback. They are labelled with a "Standing" metadata badge when not tied to a specific session.
 
 ## Decisions
+- 2026-10-12: **Standing committees remain permanently visible** across all session filters, and are labelled "Standing" in the committee accordion if no specific session is assigned.
+- 2026-10-12: **Print media stylesheet enabled** across all routes (`@media print` in `globals.css`) stripping site chrome and filters for clean document printing and PDF archiving.
+- 2026-10-12: **Enquiry CSV export enabled** in wp-admin (`admin_post_snc_export_enquiries`) with UTF-8 BOM encoding for Excel compatibility.
+- 2026-10-12: **Real-time keyword search enabled for Notices** with debounce and query persistence.
 - 2026-10-12: **The project is under version control** at `https://github.com/nayansuthar-1/snccollege.git`, pushed to `main` on the owner's instruction. The repository holds the project's own source — `frontend/`, `wp-content/plugins/snc-core-headless/`, `docs/`, `.agents/` and the root markdown — and **not** WordPress core, `wp-config.php`, `frontend/.env.local` or `wp-content/uploads/`. It is therefore **not a backup**: restoring the site needs this code plus a database dump plus the uploads folder, as `README.md` and `docs/OPERATIONS-RUNBOOK.md` §4 both say. Core can be added later if the owner wants a full-install repository; removing a committed secret could not be undone as easily, which is why the split was made this way.
 - 2026-10-09: Content items will be supplied later by the owner; see `docs/03-CONTENT-REQUIREMENTS.md`.
 - 2026-10-10: Primary navigation follows the college's own menu, not design system §7.2. Routes are unchanged; see "Phase 10 follow-up" for the full list of deviations.
@@ -970,4 +986,5 @@ production, because every other phase is blocked. No production step was attempt
 - 2026-10-10: **AISHE code omitted entirely** from the website (no unverified code shown).
 - 2026-10-10: **Programmes offered confirmed as B.A. and B.Sc. only.** All conflicting mentions of M.A., B.Com, BCA, M.Sc. on legacy pages confirmed inactive.
 - 2026-10-10: **NAAC accreditation confirmed as accredited by owner**; pending official grade and year details to be supplied before publishing to the site.
+
 

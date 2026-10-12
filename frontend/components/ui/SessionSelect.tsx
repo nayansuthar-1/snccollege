@@ -32,7 +32,7 @@ export default function SessionSelect({ years, selected, name = 'year', label = 
   }
 
   return (
-    <label className={cn('flex items-center gap-2 text-sm transition-opacity duration-200', isPending && 'opacity-60', className)}>
+    <label className={cn('flex items-center gap-2 text-sm transition-opacity duration-200 print:hidden', isPending && 'opacity-60', className)}>
       <span className="shrink-0 text-ink-500">{label}</span>
       <select
         value={selected}

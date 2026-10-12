@@ -11,7 +11,7 @@ export default function CommitteeAccordion({ committee, defaultOpen = false }: {
   const fileMeta = order ? [fileTypeLabel(order.mime), formatFileSize(order.size_bytes)].filter(Boolean) : [];
 
   return (
-    <Accordion title={committee.title} meta={committee.year?.name} defaultOpen={defaultOpen} titleAs="h2">
+    <Accordion title={committee.title} meta={committee.year?.name || 'Standing'} defaultOpen={defaultOpen} titleAs="h2">
       {committee.purpose_html && <Prose>{renderWpHtml(committee.purpose_html)}</Prose>}
 
       {committee.convener && (

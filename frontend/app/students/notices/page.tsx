@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import DocumentList from '@/components/documents/DocumentList';
 import type { DocumentItem } from '@/components/documents/DocumentRow';
+import NoticeSearch from '@/components/notices/NoticeSearch';
 import Prose from '@/components/page/Prose';
 import SectionPageLayout from '@/components/page/SectionPageLayout';
 import Pagination from '@/components/ui/Pagination';
@@ -28,8 +29,12 @@ export default async function NoticesPage({ searchParams }: { searchParams: Sear
   const sp = await searchParams;
   const type = param(sp, 'type');
   const page = pageParam(sp);
+  const q = param(sp, 'q');
 
-  const [wpPage, data] = await Promise.all([getPage(WP_PATH), getNotices({ type, page, perPage: siteConfig.pageSize })]);
+  const [wpPage, data] = await Promise.all([
+    getPage(WP_PATH),
+    getNotices({ type, page, perPage: siteConfig.pageSize, q }),
+  ]);
 
   const toItem = (notice: Notice): DocumentItem => ({
     id: notice.id,
@@ -41,11 +46,43 @@ export default async function NoticesPage({ searchParams }: { searchParams: Sear
     url: notice.url,
   });
 
+  const buildTabHref = (typeSlug?: string) => {
+    const params = new URLSearchParams();
+    if (typeSlug) params.set('type', typeSlug);
+    if (q) params.set('q', q);
+    const qs = params.toString();
+    return qs ? `${PATH}?${qs}` : PATH;
+  };
+
   const tabs = [
-    { label: 'All', href: PATH, active: type === '' },
-    ...data.types.map((t) => ({ label: t.name, href: `${PATH}?type=${t.slug}`, active: type === t.slug })),
+    { label: 'All', href: buildTabHref(), active: type === '' },
+    ...data.types.map((t) => ({ label: t.name, href: buildTabHref(t.slug), active: type === t.slug })),
   ];
   const activeType = data.types.find((t) => t.slug === type);
+
+  const buildPageBaseHref = () => {
+    const params = new URLSearchParams();
+    if (type) params.set('type', type);
+    if (q) params.set('q', q);
+    const qs = params.toString();
+    return qs ? `${PATH}?${qs}` : PATH;
+  };
+
+  const caption = q
+    ? `Search results for "${q}"${activeType ? ` in ${activeType.name}` : ''}`
+    : activeType
+      ? `${activeType.name} notices`
+      : 'All notices';
+
+  const emptyTitle = q
+    ? `No notices found matching "${q}"`
+    : activeType
+      ? `No ${activeType.name.toLowerCase()} notices yet`
+      : 'No notices published yet';
+
+  const emptyDescription = q
+    ? 'Try checking for typos or searching for a different keyword.'
+    : 'Notices appear here as soon as the college publishes them.';
 
   return (
     <SectionPageLayout
@@ -56,17 +93,29 @@ export default async function NoticesPage({ searchParams }: { searchParams: Sear
     >
       {wpPage?.content_html && <Prose className="mb-10">{renderWpHtml(wpPage.content_html)}</Prose>}
 
-      {data.types.length > 1 && <TabLinks items={tabs} label="Filter notices by type" className="mb-8" />}
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        {data.types.length > 1 ? (
+          <div className="min-w-0 flex-1">
+            <TabLinks items={tabs} label="Filter notices by type" />
+          </div>
+        ) : (
+          <div />
+        )}
+        <div className="shrink-0">
+          <NoticeSearch selectedQuery={q} className="w-full sm:w-72" />
+        </div>
+      </div>
 
       <DocumentList
         items={data.items.map(toItem)}
         metaColumns={['Type']}
-        caption={activeType ? `${activeType.name} notices` : 'All notices'}
-        emptyTitle={activeType ? `No ${activeType.name.toLowerCase()} notices yet` : 'No notices published yet'}
-        emptyDescription="Notices appear here as soon as the college publishes them."
+        caption={caption}
+        emptyTitle={emptyTitle}
+        emptyDescription={emptyDescription}
       />
 
-      <Pagination page={data.page} totalPages={data.total_pages} baseHref={type ? `${PATH}?type=${type}` : PATH} />
+      <Pagination page={data.page} totalPages={data.total_pages} baseHref={buildPageBaseHref()} />
     </SectionPageLayout>
   );
 }
+
